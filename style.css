@@ -211,6 +211,21 @@ video{
   .merch-grid{ grid-template-columns:repeat(2,1fr); }
 }
 
+/* ---------- GIF OVERLAYS (decorative, don't affect layout) ---------- */
+.gif-overlay-wrap{
+  position:relative;
+  display:inline-block;
+}
+.gif-overlay{
+  position:absolute;
+  pointer-events:none;
+  z-index:5;
+}
+.gif-tr{ top:-18px; right:-55px; }
+.gif-tl{ top:-18px; left:-55px; }
+.gif-br{ bottom:-18px; right:-55px; }
+.gif-bl{ bottom:-18px; left:-55px; }
+
 /* ---------- MERCH SCROLL COLUMN ---------- */
 .merch-col{
   display:flex;

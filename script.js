@@ -17,36 +17,66 @@ document.addEventListener("mousemove", function(e){
   setTimeout(()=> el.remove(), 850);
 });
 
-// --- fake hit counter (increments per visit, stored locally in your browser) ---
+// --- real hit counter (shared across all visitors via Cloudflare KV) ---
 function initCounter(){
   const el = document.getElementById("hitcounter");
   if(!el) return;
-  let count = parseInt(localStorage.getItem("crocodose_hits") || "133700", 10);
-  count += 1;
-  localStorage.setItem("crocodose_hits", count);
-  el.textContent = String(count).padStart(7,"0");
+  fetch("/api/counter")
+    .then(res => res.json())
+    .then(data => {
+      el.textContent = String(data.count).padStart(7,"0");
+    })
+    .catch(() => {
+      el.textContent = "??????";
+    });
 }
 
-// --- guestbook (client-side only, resets on reload, just for fun) ---
+// --- real guestbook (shared across all visitors via Cloudflare KV) ---
 function initGuestbook(){
   const form = document.getElementById("gb-form");
-  if(!form) return;
   const list = document.getElementById("gb-list");
+  if(!list) return;
+
+  function renderEntries(entries){
+    // clear everything except the static "Webmaster" welcome entry
+    list.querySelectorAll(".gb-entry.dynamic").forEach(el => el.remove());
+    entries.forEach(entry => {
+      const div = document.createElement("div");
+      div.className = "gb-entry dynamic";
+      div.innerHTML = "<b>" + entry.name + "</b>: " + entry.message;
+      list.appendChild(div);
+    });
+  }
+
+  function loadEntries(){
+    fetch("/api/guestbook")
+      .then(res => res.json())
+      .then(data => renderEntries(data.entries || []))
+      .catch(() => {});
+  }
+
+  loadEntries();
+
+  if(!form) return;
   form.addEventListener("submit", function(e){
     e.preventDefault();
     const name = document.getElementById("gb-name").value || "Anonymous Crocodile";
-    const msg = document.getElementById("gb-message").value || "...";
-    const entry = document.createElement("div");
-    entry.className = "gb-entry";
-    entry.innerHTML = "<b>" + escapeHtml(name) + "</b>: " + escapeHtml(msg);
-    list.prepend(entry);
-    form.reset();
+    const message = document.getElementById("gb-message").value || "...";
+
+    fetch("/api/guestbook", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, message }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if(data.entries) renderEntries(data.entries);
+        form.reset();
+      })
+      .catch(() => {
+        alert("Couldn't save your message right now — try again in a moment.");
+      });
   });
-}
-function escapeHtml(str){
-  const div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML;
 }
 
 // --- merch vertical auto-scroller with 3D middle-scale + edge-overlap effect ---
