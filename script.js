@@ -85,9 +85,40 @@ function initMerchScroll(){
   requestAnimationFrame(frame);
 }
 
+// --- stills page lightbox ---
+function initLightbox(){
+  const overlay = document.getElementById("lightbox");
+  const overlayImg = document.getElementById("lightboxImg");
+  const closeBtn = document.getElementById("lightboxClose");
+  const thumbs = document.querySelectorAll(".still-thumb img");
+  if(!overlay || thumbs.length === 0) return;
+
+  function openLightbox(src, alt){
+    overlayImg.src = src;
+    overlayImg.alt = alt;
+    overlay.classList.add("active");
+  }
+  function closeLightbox(){
+    overlay.classList.remove("active");
+    overlayImg.src = "";
+  }
+
+  thumbs.forEach(img => {
+    img.addEventListener("click", () => openLightbox(img.src, img.alt));
+  });
+  closeBtn.addEventListener("click", closeLightbox);
+  overlay.addEventListener("click", function(e){
+    if(e.target === overlay) closeLightbox();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") closeLightbox();
+  });
+}
+
 window.addEventListener("DOMContentLoaded", function(){
   initCounter();
   initGuestbook();
   initMerchScroll();
+  initLightbox();
 });
 
