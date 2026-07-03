@@ -60,7 +60,7 @@ marquee{
 .box{
   border:4px double #00ffff;
   background:rgba(20,0,30,0.85);
-  max-width:640px;
+  max-width:800px;
   margin:14px auto;
   padding:14px;
   box-shadow:0 0 12px #ff00ff;
@@ -134,14 +134,83 @@ video{
   .merch-grid{ grid-template-columns:repeat(2,1fr); }
 }
 
+/* ---------- MERCH SCROLL COLUMN ---------- */
+.merch-col{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  flex:0 0 240px;
+}
+.merch-banner{
+  background:linear-gradient(180deg,#ff66ff,#990099);
+  border:2px solid #0ff;
+  color:yellow;
+  font-weight:bold;
+  font-size:0.85em;
+  padding:6px 10px;
+  white-space:nowrap;
+}
+.merch-col-link{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+}
+.merch-scroll-box{
+  width:220px;
+  height:600px;
+  position:relative;
+  overflow:visible;
+  clip-path: inset(0 -70px 0 -70px);
+  border:4px double #00ffff;
+  background:#ffd6ec;
+  box-shadow:0 0 12px #ff00ff;
+}
+.merch-scroll-track{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:60px;
+  padding:40px 0;
+  position:relative;
+  will-change: transform;
+}
+.merch-scroll-track img{
+  width:170px;
+  height:auto;
+  display:block;
+  filter: drop-shadow(0 0 10px red);
+  animation: rainbowglow 4s linear infinite;
+}
+.merch-scroll-track img:nth-child(2n){ animation-delay: -1s; }
+.merch-scroll-track img:nth-child(3n){ animation-delay: -2s; }
+.merch-scroll-track img:nth-child(4n){ animation-delay: -3s; }
+@keyframes rainbowglow{
+  0%{ filter: drop-shadow(0 0 10px red); }
+  16.6%{ filter: drop-shadow(0 0 10px orange); }
+  33.3%{ filter: drop-shadow(0 0 10px yellow); }
+  50%{ filter: drop-shadow(0 0 10px lime); }
+  66.6%{ filter: drop-shadow(0 0 10px cyan); }
+  83.3%{ filter: drop-shadow(0 0 10px blue); }
+  100%{ filter: drop-shadow(0 0 10px magenta); }
+}
+
+.box:has(video){
+  width:fit-content;
+  max-width:100%;
+}
+
 /* ---------- HOMEPAGE COLUMNS ---------- */
 .homepage-columns{
   display:flex;
   flex-wrap:wrap;
   justify-content:center;
   align-items:flex-start;
-  gap:20px;
-  max-width:900px;
+  gap:30px;
+  max-width:1400px;
+  width:94%;
   margin:14px auto;
 }
 .poster-col{
@@ -149,9 +218,11 @@ video{
   flex-direction:column;
   align-items:center;
   gap:10px;
+  flex:0 0 240px;
 }
 .poster-img{
-  width:260px;
+  width:100%;
+  max-width:280px;
   border:4px double #00ffff;
   box-shadow:0 0 12px #ff00ff;
 }
@@ -166,7 +237,7 @@ video{
   font-family:"Comic Sans MS", cursive;
 }
 .nobudge-btn:hover{ background:linear-gradient(180deg,#ff99ff,#cc00cc); }
-.content-col{ flex:1; min-width:280px; max-width:640px; }
+.content-col{ flex:0 1 800px; max-width:800px; }
 
 /* ---------- NAV BAR ---------- */
 .navbar{

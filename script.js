@@ -49,7 +49,45 @@ function escapeHtml(str){
   return div.innerHTML;
 }
 
+// --- merch vertical auto-scroller with 3D middle-scale + edge-overlap effect ---
+function initMerchScroll(){
+  const box = document.getElementById("merchScroll");
+  const track = document.getElementById("merchTrack");
+  if(!box || !track) return;
+
+  const speed = 0.6; // px per frame
+  let posY = 0;
+
+  function frame(){
+    posY -= speed;
+    const half = track.scrollHeight / 2;
+    if(Math.abs(posY) >= half){
+      posY += half;
+    }
+    track.style.transform = "translateY(" + posY + "px)";
+
+    const boxRect = box.getBoundingClientRect();
+    const centerY = boxRect.top + boxRect.height / 2;
+    const imgs = track.querySelectorAll("img");
+    imgs.forEach(img => {
+      const r = img.getBoundingClientRect();
+      const imgCenter = r.top + r.height / 2;
+      const dist = Math.abs(imgCenter - centerY);
+      const maxDist = boxRect.height / 2;
+      const norm = Math.min(dist / maxDist, 1);
+      const scale = 1.5 - norm * 0.55; // pops past box edge near center, shrinks toward top/bottom
+      img.style.transform = "scale(" + scale.toFixed(3) + ")";
+      img.style.zIndex = Math.round((1 - norm) * 100);
+    });
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
 window.addEventListener("DOMContentLoaded", function(){
   initCounter();
   initGuestbook();
+  initMerchScroll();
 });
+
