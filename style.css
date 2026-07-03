@@ -87,6 +87,44 @@ video{
   height:auto;
 }
 
+/* ---------- MERCH GRID ---------- */
+.merch-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:20px;
+  max-width:960px;
+  margin:20px auto;
+  padding:0 10px;
+}
+.merch-item{
+  background:#fff5fa;
+  border:3px solid #ff66ff;
+  border-radius:10px;
+  padding:14px 10px 16px;
+  box-shadow:0 0 14px 2px rgba(255,0,255,0.55);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.merch-item:hover{
+  transform:scale(1.07);
+  box-shadow:0 0 26px 6px rgba(0,255,255,0.75);
+}
+.merch-item img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:6px;
+}
+.merch-name{
+  margin-top:10px;
+  font-size:0.85em;
+  font-weight:bold;
+  color:#990099;
+  font-family:"Comic Sans MS", cursive;
+}
+@media (max-width:700px){
+  .merch-grid{ grid-template-columns:repeat(2,1fr); }
+}
+
 /* ---------- HOMEPAGE COLUMNS ---------- */
 .homepage-columns{
   display:flex;
