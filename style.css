@@ -9,7 +9,7 @@ body{
     repeating-linear-gradient(45deg, #0a0a1a 0, #0a0a1a 40px, #000 40px, #000 80px);
   background-size: 20px 20px, 113px 113px;
   color:hotpink;
-  font-family: "Comic Sans MS", "Comic Sans", cursive, monospace;
+  font-family: "Comic Sans MS", "Comic Sans", "Comic Neue", Arial, sans-serif;
   text-align:center;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><text y="18" font-size="20">🐊</text></svg>') 12 12, auto;
   margin:0;
@@ -19,6 +19,30 @@ body{
 a{color:cyan; text-decoration:underline;}
 a:hover{color:yellow; background:magenta;}
 a:visited{color:#dd88ff;}
+
+html{
+  overflow-x:hidden;
+  max-width:100%;
+}
+
+/* ---------- MOBILE-ONLY FIXES (scoped to small screens, desktop unaffected) ---------- */
+@media (max-width: 768px){
+  .navbar{
+    padding:10px 6px;
+    line-height:2.4;
+  }
+  .navbar a{
+    display:inline-block;
+    padding:6px 4px;
+    font-size:1.05em;
+  }
+  .rainbow{
+    font-size:2em;
+  }
+  marquee{
+    font-size:0.9em;
+  }
+}
 
 /* ---------- HEADINGS ---------- */
 .rainbow{
