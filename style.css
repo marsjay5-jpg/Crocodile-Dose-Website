@@ -1,13 +1,211 @@
+/* ============================================
+   CROCODILE DOSE — 1998 GEOCITIES EDITION
+   ============================================ */
+
 body{
-background:black;
-color:hotpink;
-font-family:Courier New, monospace;
-text-align:center;
+  background-color:#000000;
+  background-image:
+    radial-gradient(circle, #1a1a1a 1px, transparent 1px),
+    repeating-linear-gradient(45deg, #0a0a1a 0, #0a0a1a 40px, #000 40px, #000 80px);
+  background-size: 20px 20px, 113px 113px;
+  color:hotpink;
+  font-family: "Comic Sans MS", "Comic Sans", cursive, monospace;
+  text-align:center;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><text y="18" font-size="20">🐊</text></svg>') 12 12, auto;
+  margin:0;
+  padding:0;
 }
-a{color:cyan;}
+
+a{color:cyan; text-decoration:underline;}
+a:hover{color:yellow; background:magenta;}
+a:visited{color:#dd88ff;}
+
+/* ---------- HEADINGS ---------- */
 .rainbow{
-animation:rainbow 3s infinite;
+  font-size:3em;
+  text-shadow: 3px 3px 0 #000;
+  animation:rainbow 3s infinite, wiggle 1.2s ease-in-out infinite;
+  letter-spacing:2px;
 }
 @keyframes rainbow{
-0%{color:red;}20%{color:orange;}40%{color:yellow;}60%{color:green;}80%{color:blue;}100%{color:violet;}
+  0%{color:red;}20%{color:orange;}40%{color:yellow;}60%{color:lime;}80%{color:cyan;}100%{color:magenta;}
+}
+@keyframes wiggle{
+  0%,100%{transform:rotate(-2deg) scale(1);}
+  50%{transform:rotate(2deg) scale(1.03);}
+}
+
+/* ---------- BLINK (since <blink> is dead, long live CSS) ---------- */
+.blink{
+  animation: blink 1s step-start infinite;
+  color:yellow;
+  font-weight:bold;
+}
+@keyframes blink{
+  50%{ visibility:hidden; }
+}
+
+/* ---------- MARQUEES ---------- */
+marquee{
+  background:#220022;
+  border:3px ridge magenta;
+  padding:6px;
+  color:#0f0;
+  font-weight:bold;
+  margin:8px auto;
+  max-width:700px;
+}
+
+/* ---------- CONTAINERS / TABLES (classic geocities boxing) ---------- */
+.box{
+  border:4px double #00ffff;
+  background:rgba(20,0,30,0.85);
+  max-width:640px;
+  margin:14px auto;
+  padding:14px;
+  box-shadow:0 0 12px #ff00ff;
+}
+table.retro{
+  margin:14px auto;
+  border-collapse:collapse;
+  background:#110011;
+  border:3px outset #ff66ff;
+}
+table.retro td, table.retro th{
+  border:1px solid #ff66ff;
+  padding:8px 12px;
+  color:#00ffcc;
+}
+table.retro th{
+  background:#330033;
+  color:yellow;
+}
+
+/* ---------- NAV BAR ---------- */
+.navbar{
+  background:#000033;
+  border-top:3px solid #ff00ff;
+  border-bottom:3px solid #ff00ff;
+  padding:8px;
+  margin-bottom:10px;
+  font-weight:bold;
+}
+.navbar a{ margin:0 8px; }
+
+/* ---------- HIT COUNTER ---------- */
+.counter-wrap{
+  display:inline-block;
+  background:#000;
+  border:2px inset #888;
+  padding:6px 10px;
+  margin:10px auto;
+}
+.counter-digits{
+  font-family:"Courier New", monospace;
+  background:#000;
+  color:#0f0;
+  letter-spacing:4px;
+  font-size:1.6em;
+  padding:2px 8px;
+  border:1px solid #0f0;
+}
+.counter-label{
+  font-size:0.7em;
+  color:#aaa;
+  display:block;
+}
+
+/* ---------- BADGES (best viewed in, webring, etc) ---------- */
+.badge-row{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin:16px auto;
+  max-width:700px;
+}
+.badge{
+  background:linear-gradient(180deg,#333,#000);
+  border:2px solid #0ff;
+  color:#0ff;
+  font-size:0.75em;
+  padding:6px 10px;
+  font-family:"Courier New", monospace;
+}
+
+/* ---------- SPARKLES / STARS ---------- */
+.sparkle{
+  position:fixed;
+  pointer-events:none;
+  font-size:18px;
+  animation: sparkle-fall linear forwards;
+  z-index:9999;
+}
+@keyframes sparkle-fall{
+  0%{ transform:translateY(0) rotate(0deg); opacity:1; }
+  100%{ transform:translateY(40px) rotate(360deg); opacity:0; }
+}
+
+/* ---------- SPINNING / DANCING ICONS ---------- */
+.spin{ display:inline-block; animation:spin 2s linear infinite; }
+@keyframes spin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+
+.dance{ display:inline-block; animation:dance 0.6s ease-in-out infinite; }
+@keyframes dance{
+  0%,100%{ transform:translateY(0) rotate(-8deg); }
+  50%{ transform:translateY(-14px) rotate(8deg); }
+}
+
+.flame{ display:inline-block; animation:flame 0.4s ease-in-out infinite alternate; }
+@keyframes flame{
+  0%{ transform:scale(1) skewX(-3deg); }
+  100%{ transform:scale(1.1) skewX(3deg); }
+}
+
+/* ---------- CONSTRUCTION STRIPE BAR ---------- */
+.construction-bar{
+  height:26px;
+  max-width:640px;
+  margin:14px auto;
+  background:repeating-linear-gradient(45deg,#ffcc00,#ffcc00 12px,#000 12px,#000 24px);
+  animation:barmove 1s linear infinite;
+  border:2px solid #000;
+}
+@keyframes barmove{
+  from{ background-position:0 0; }
+  to{ background-position:34px 0; }
+}
+
+/* ---------- GUESTBOOK ---------- */
+textarea, input[type=text]{
+  font-family:"Comic Sans MS", cursive;
+  background:#000;
+  color:#0f0;
+  border:2px inset #0f0;
+}
+button, input[type=submit]{
+  font-family:"Comic Sans MS", cursive;
+  background:linear-gradient(180deg,#ff66ff,#990099);
+  color:#fff;
+  border:2px outset #ff66ff;
+  padding:6px 14px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover, input[type=submit]:hover{ background:linear-gradient(180deg,#ff99ff,#cc00cc); }
+
+.gb-entry{
+  text-align:left;
+  border-bottom:1px dashed #ff66ff;
+  padding:6px 4px;
+  color:#00ffcc;
+}
+.gb-entry b{ color:yellow; }
+
+footer.retro-footer{
+  margin-top:24px;
+  padding:14px;
+  font-size:0.8em;
+  color:#888;
+  border-top:2px dashed #ff00ff;
 }

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html><head><title>Crocodle // Crocodile Dose</title><link rel="stylesheet" href="style.css">
+<style>
+#wordle-wrap{ max-width:400px; margin:16px auto; }
+.wgrid{ display:grid; grid-template-rows:repeat(6,1fr); gap:6px; margin:14px auto; width:280px; }
+.wrow{ display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+.wtile{
+  width:50px; height:50px; line-height:50px;
+  border:2px solid #ff66ff; background:#110011; color:#fff;
+  font-weight:bold; font-size:1.4em; font-family:"Courier New",monospace;
+  text-transform:uppercase;
+}
+.wtile.correct{ background:#0a8c3f; border-color:#0f0; }
+.wtile.present{ background:#a88a00; border-color:#ff0; }
+.wtile.absent{ background:#333; border-color:#555; }
+#wkeyboard{ margin:14px auto; max-width:400px; }
+.wkey-row{ display:flex; justify-content:center; gap:4px; margin-bottom:4px; }
+.wkey{
+  background:#330033; color:#0ff; border:1px solid #ff66ff;
+  padding:8px 6px; min-width:28px; font-family:"Courier New",monospace;
+  font-weight:bold; cursor:pointer; text-transform:uppercase; font-size:0.85em;
+}
+.wkey:hover{ background:#660066; }
+.wkey.correct{ background:#0a8c3f; color:#fff; }
+.wkey.present{ background:#a88a00; color:#fff; }
+.wkey.absent{ background:#333; color:#777; }
+#wmessage{ min-height:28px; font-weight:bold; color:yellow; }
+</style>
+</head>
+<body>
+<center>
+<div class="navbar">
+<a href="index.html">Home</a>|<a href="trailer.html">Trailer</a>|<a href="screenings.html">Screenings</a>|<a href="merch.html">Merch</a>|<a href="about.html">About</a>|<a href="stills.html">Stills</a>|<a href="guestbook.html">Guestbook</a>|<a href="wordle.html">Crocodle</a>
+</div>
+
+<h1 class="rainbow">🐊 CROCODLE 🐊</h1>
+<marquee>*** GUESS THE 5 LETTER WORD *** 6 TRIES *** GOOD LUCK ***</marquee>
+
+<div id="wordle-wrap">
+<div class="box">
+<div id="wgrid" class="wgrid"></div>
+<div id="wmessage"></div>
+<div id="wkeyboard"></div>
+</div>
+</div>
+
+<footer class="retro-footer">
+<a href="index.html">← Back to Home</a>
+</footer>
+</center>
+<script src="script.js"></script>
+<script>
+(function(){
+  const ANSWER = "WEIRD";
+  const MAX_GUESSES = 6;
+  let currentGuess = "";
+  let guessRow = 0;
+  let gameOver = false;
+
+  const grid = document.getElementById("wgrid");
+  const message = document.getElementById("wmessage");
+  const keyboardDiv = document.getElementById("wkeyboard");
+
+  // build grid
+  for(let r=0;r<MAX_GUESSES;r++){
+    const row = document.createElement("div");
+    row.className = "wrow";
+    row.id = "wrow-"+r;
+    for(let c=0;c<5;c++){
+      const tile = document.createElement("div");
+      tile.className = "wtile";
+      tile.id = "wtile-"+r+"-"+c;
+      row.appendChild(tile);
+    }
+    grid.appendChild(row);
+  }
+
+  // build keyboard
+  const rows = ["QWERTYUIOP","ASDFGHJKL","ZXCVBNM"];
+  rows.forEach((rowStr, i) => {
+    const rowDiv = document.createElement("div");
+    rowDiv.className = "wkey-row";
+    if(i === 2){
+      const enterKey = document.createElement("button");
+      enterKey.className = "wkey";
+      enterKey.textContent = "ENTER";
+      enterKey.onclick = () => submitGuess();
+      rowDiv.appendChild(enterKey);
+    }
+    rowStr.split("").forEach(letter => {
+      const key = document.createElement("button");
+      key.className = "wkey";
+      key.id = "wkey-"+letter;
+      key.textContent = letter;
+      key.onclick = () => addLetter(letter);
+      rowDiv.appendChild(key);
+    });
+    if(i === 2){
+      const delKey = document.createElement("button");
+      delKey.className = "wkey";
+      delKey.textContent = "DEL";
+      delKey.onclick = () => deleteLetter();
+      rowDiv.appendChild(delKey);
+    }
+    keyboardDiv.appendChild(rowDiv);
+  });
+
+  function addLetter(letter){
+    if(gameOver || currentGuess.length >= 5) return;
+    currentGuess += letter;
+    updateGrid();
+  }
+  function deleteLetter(){
+    if(gameOver) return;
+    currentGuess = currentGuess.slice(0,-1);
+    updateGrid();
+  }
+  function updateGrid(){
+    for(let c=0;c<5;c++){
+      const tile = document.getElementById("wtile-"+guessRow+"-"+c);
+      tile.textContent = currentGuess[c] || "";
+    }
+  }
+  function submitGuess(){
+    if(gameOver) return;
+    if(currentGuess.length !== 5){
+      message.textContent = "Not enough letters!";
+      return;
+    }
+    const guess = currentGuess.toUpperCase();
+    const answerLetters = ANSWER.split("");
+    const guessLetters = guess.split("");
+    const result = new Array(5).fill("absent");
+
+    // pass 1: correct
+    const answerRemaining = [...answerLetters];
+    for(let i=0;i<5;i++){
+      if(guessLetters[i] === answerLetters[i]){
+        result[i] = "correct";
+        answerRemaining[i] = null;
+      }
+    }
+    // pass 2: present
+    for(let i=0;i<5;i++){
+      if(result[i] === "correct") continue;
+      const idx = answerRemaining.indexOf(guessLetters[i]);
+      if(idx !== -1){
+        result[i] = "present";
+        answerRemaining[idx] = null;
+      }
+    }
+
+    for(let c=0;c<5;c++){
+      const tile = document.getElementById("wtile-"+guessRow+"-"+c);
+      tile.classList.add(result[c]);
+      const key = document.getElementById("wkey-"+guessLetters[c]);
+      if(key){
+        if(result[c] === "correct") key.className = "wkey correct";
+        else if(result[c] === "present" && !key.className.includes("correct")) key.className = "wkey present";
+        else if(!key.className.includes("correct") && !key.className.includes("present")) key.className = "wkey absent";
+      }
+    }
+
+    if(guess === ANSWER){
+      message.textContent = "🐊 YOU GOT IT! IT WAS WEIRD! 🐊";
+      gameOver = true;
+      return;
+    }
+
+    guessRow++;
+    currentGuess = "";
+    if(guessRow >= MAX_GUESSES){
+      message.textContent = "GAME OVER! The word was " + ANSWER;
+      gameOver = true;
+    } else {
+      message.textContent = "";
+    }
+  }
+
+  document.addEventListener("keydown", function(e){
+    if(gameOver) return;
+    const key = e.key.toUpperCase();
+    if(key === "ENTER") submitGuess();
+    else if(key === "BACKSPACE") deleteLetter();
+    else if(/^[A-Z]$/.test(key)) addLetter(key);
+  });
+})();
+</script>
+</body></html>

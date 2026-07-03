@@ -1,5 +1,25 @@
-<html><head><title>Curtis Dating Simulator</title><link rel="stylesheet" href="style.css"></head><body>
-<h1>Curtis Dating Simulator</h1>
+<!DOCTYPE html>
+<html><head><title>Curtis Dating Simulator</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<center>
+<div class="navbar">
+<a href="index.html">Home</a>|<a href="about.html">About</a>
+</div>
+
+<h1 class="rainbow">💘 Curtis Dating Simulator 💘</h1>
+<marquee>*** CAN YOU WIN CURTIS'S HEART? ***</marquee>
+
+<div class="box">
+<p><span class="dance" style="font-size:3em;">🧑</span></p>
 <p>You compliment Curtis.</p>
-<button onclick="alert('Curtis approves.')">Flirt</button>
+<button onclick="document.getElementById('result').textContent='💖 Curtis approves. 💖'; document.getElementById('heart').style.display='inline-block';">Flirt</button>
+<p id="result" style="color:yellow; font-weight:bold;"></p>
+<span id="heart" class="dance" style="display:none; font-size:2em;">❤️❤️❤️</span>
+</div>
+
+<footer class="retro-footer">
+<a href="about.html">← Back to About</a>
+</footer>
+</center>
+<script src="script.js"></script>
 </body></html>
