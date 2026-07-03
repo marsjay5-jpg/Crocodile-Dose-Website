@@ -97,22 +97,31 @@ video{
   padding:0 10px;
 }
 .merch-item{
-  background:#fff5fa;
+  background:#ffd6ec;
   border:3px solid #ff66ff;
   border-radius:10px;
   padding:14px 10px 16px;
   box-shadow:0 0 14px 2px rgba(255,0,255,0.55);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position:relative;
+  z-index:1;
 }
 .merch-item:hover{
-  transform:scale(1.07);
+  transform:scale(1.04);
   box-shadow:0 0 26px 6px rgba(0,255,255,0.75);
+  z-index:5;
 }
 .merch-item img{
   width:100%;
   height:auto;
   display:block;
   border-radius:6px;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.85));
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+.merch-item:hover img{
+  transform:scale(1.18);
+  filter: drop-shadow(0 0 18px rgba(255,255,255,1));
 }
 .merch-name{
   margin-top:10px;
