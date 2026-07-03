@@ -1,5 +1,20 @@
 <!DOCTYPE html>
-<html><head><title>Curtis Dating Simulator</title><link rel="stylesheet" href="style.css"></head>
+<html><head><title>Curtis Dating Simulator</title><link rel="stylesheet" href="style.css">
+<style>
+#curtis-game{ max-width:480px; margin:0 auto; }
+#curtis-text{
+  min-height:110px;
+  text-align:left;
+  color:#00ffcc;
+  font-size:1.05em;
+  line-height:1.5;
+  margin-bottom:16px;
+}
+#curtis-choices{ display:flex; flex-direction:column; gap:10px; align-items:center; }
+#curtis-choices button{ width:100%; max-width:360px; }
+.curtis-restart{ margin-top:18px; }
+</style>
+</head>
 <body>
 <center>
 <div class="navbar">
@@ -10,12 +25,10 @@
 <img src="gifs/NN3L2WCMXFP53UHLTD7U2YQ7F7G6HRH3.gif" alt="Curtis heart" width="100">
 <marquee>*** CAN YOU WIN CURTIS'S HEART? ***</marquee>
 
-<div class="box">
+<div class="box" id="curtis-game">
 <p><span class="dance" style="font-size:3em;">🧑</span></p>
-<p>You compliment Curtis.</p>
-<button onclick="document.getElementById('result').textContent='💖 Curtis approves. 💖'; document.getElementById('heart').style.display='inline-block';">Flirt</button>
-<p id="result" style="color:yellow; font-weight:bold;"></p>
-<span id="heart" class="dance" style="display:none; font-size:2em;">❤️❤️❤️</span>
+<div id="curtis-text"></div>
+<div id="curtis-choices"></div>
 </div>
 
 <footer class="retro-footer">
@@ -23,4 +36,91 @@
 </footer>
 </center>
 <script src="script.js"></script>
+<script>
+(function(){
+  const scenes = {
+    start: {
+      text: "You spot Curtis sitting alone by the fire pit, scrolling his phone with the thousand-yard stare of a man who has re-read the same text seventeen times.",
+      choices: [{ label: "Walk over", next: "beat2" }]
+    },
+    beat2: {
+      text: "\u201cOh — hey,\u201d Curtis mumbles, not looking up. \u201cSorry, I'm not really in party mode tonight.\u201d",
+      choices: [{ label: "Sit down anyway", next: "beat3" }]
+    },
+    beat3: {
+      text: "He flips his phone around. \u201cJane just posted a story. From Cabo. With HIM.\u201d The betrayal in his voice could power the fireworks display.",
+      choices: [{ label: "Continue", next: "choice1" }]
+    },
+    choice1: {
+      text: "Curtis looks at you like you're the only sane person left at this party. How do you respond?",
+      choices: [
+        { label: "\u201cForget her. You're better than that.\u201d", next: "beat5a" },
+        { label: "\u201cWanna talk about it?\u201d", next: "beat5b" }
+      ]
+    },
+    beat5a: {
+      text: "Curtis blinks, surprised. \u201cYeah... yeah, maybe you're right.\u201d He sits up a little straighter, like a man remembering he has a spine.",
+      choices: [{ label: "Continue", next: "beat6" }]
+    },
+    beat5b: {
+      text: "Curtis's shoulders drop. \u201cNobody's asked me that all summer.\u201d He actually puts the phone face-down on the grass. Progress.",
+      choices: [{ label: "Continue", next: "beat6" }]
+    },
+    beat6: {
+      text: "He's quiet for a second, watching the fireworks reflect off everyone's plastic cups. \u201cCan I ask you something weird?\u201d",
+      choices: [{ label: "Sure, go ahead", next: "choice2" }]
+    },
+    choice2: {
+      text: "\u201cDo you think I still have a shot with her? Or...\u201d he trails off, \u201c...should I just move on?\u201d This is the moment. What do you tell him?",
+      choices: [
+        { label: "\u201cDistance makes people realize things. Text her.\u201d", next: "endingA" },
+        { label: "\u201cHonestly? You deserve someone who actually shows up.\u201d", next: "endingB" }
+      ]
+    },
+    endingA: {
+      text: "🐊 ENDING: THE LONG DISTANCE HOPE 🐊\n\nCurtis fires off a text to Jane right there by the fire pit. Three dots appear. Then disappear. Then appear again. He stares at his phone with the focus of a bomb technician. Whatever happens next, you were there for it. Curtis gives you a nod. \u201cThanks for having my back.\u201d",
+      choices: [],
+      ending: true
+    },
+    endingB: {
+      text: "🔥 ENDING: THE GLOW-UP 🔥\n\nCurtis stands up, looks at his phone one last time, and gently sets it down like he's retiring a jersey. \u201cYou know what? You're right.\u201d He walks off into the party, taller somehow, already talking to someone new by the drinks table. Legend has it he never mentioned Jane again.",
+      choices: [],
+      ending: true
+    }
+  };
+
+  const textEl = document.getElementById("curtis-text");
+  const choicesEl = document.getElementById("curtis-choices");
+
+  function render(sceneKey){
+    const scene = scenes[sceneKey];
+    textEl.textContent = scene.text;
+    choicesEl.innerHTML = "";
+
+    if(scene.ending){
+      const heart = document.createElement("span");
+      heart.className = "dance";
+      heart.style.fontSize = "2em";
+      heart.textContent = "❤️❤️❤️";
+      choicesEl.appendChild(heart);
+
+      const restartBtn = document.createElement("button");
+      restartBtn.className = "curtis-restart";
+      restartBtn.textContent = "Play Again";
+      restartBtn.onclick = () => render("start");
+      choicesEl.appendChild(restartBtn);
+      return;
+    }
+
+    scene.choices.forEach(choice => {
+      const btn = document.createElement("button");
+      btn.textContent = choice.label;
+      btn.onclick = () => render(choice.next);
+      choicesEl.appendChild(btn);
+    });
+  }
+
+  render("start");
+})();
+</script>
 </body></html>
