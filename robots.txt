@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://crocodiledose.com/sitemap.xml
